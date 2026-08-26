@@ -43,7 +43,7 @@ letters.forEach((char, i) => {
 
 /*=============== HOME TYPED JS ===============*/
 const typedHome = new Typed('#home-typed', {
-   strings: ['Programar', 'Web Devloper', 'Gamer'],
+   strings: ['Programmer', 'Web Developer', 'Gamer'],
    typeSpeed: 60,
    backSpeed: 30,
    backDelay: 2000,
