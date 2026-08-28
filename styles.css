@@ -624,7 +624,7 @@ img {
 
 .services__card {
   border-bottom: 2px solid var(--container-color);
-  padding-bottom: 1.5rem;
+  padding-bottom: 2rem;
   overflow: hidden;
 }
 
@@ -664,19 +664,20 @@ img {
 
 .services__description {
   margin: 1rem 2rem;
+  padding-bottom: 1rem;
 }
 
 .services__list {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1rem;
 }
 
 .services__item {
-  border: 2px solid var(--first-color);
+  border: 1.5px solid var(--first-color);
   border-radius: 4rem;
-  padding: 0.375rem 0.5rem;
+  padding: 0.4rem 0.5rem;
   color: var(--white-color);
   font: var(--font-semi-bold) var(--h3-font-size) var(--second-font);
 }
@@ -778,7 +779,6 @@ img {
 
 /*=============== TESTIMONIALS SECTION ===============*/
 
-/* Infinite scroll animation */
 
 
 /*=============== CONTACT SECTION ===============*/
@@ -1290,4 +1290,113 @@ img {
   .cursor{
     display: none;
   }
+}
+
+
+/* ANIMATED TECH GRID BACKGROUND */
+
+body {
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ---------- Moving Grid ---------- */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.065) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.065) 1px,
+      transparent 1px
+    );
+
+  background-size: 50px 50px;
+
+  animation: gridMove 7s linear infinite;
+
+  pointer-events: none;
+  z-index: 0;
+}
+
+
+/* ---------- Stronger Green Glow ---------- */
+
+body::after {
+  content: "";
+  position: fixed;
+
+  width: 800px;
+  height: 800px;
+
+  top: 40%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  background: radial-gradient(
+    circle,
+    hsla(var(--hue), 75%, 60%, 0.20) 0%,
+    hsla(var(--hue), 75%, 60%, 0.10) 30%,
+    hsla(var(--hue), 75%, 60%, 0.04) 50%,
+    transparent 72%
+  );
+
+  filter: blur(45px);
+
+  animation: glowMove 6s ease-in-out infinite alternate;
+
+  pointer-events: none;
+  z-index: 0;
+}
+
+
+/* ---------- Keep Website Above Background ---------- */
+
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* =========================================================
+   GRID MOVEMENT
+   ========================================================= */
+
+@keyframes gridMove {
+
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 50px 50px;
+  }
+
+}
+
+
+/* =========================================================
+   GLOW MOVEMENT
+   ========================================================= */
+
+@keyframes glowMove {
+
+  0% {
+    transform: translate(-55%, -50%) scale(0.85);
+    opacity: 0.65;
+  }
+
+  100% {
+    transform: translate(-45%, -50%) scale(1.15);
+    opacity: 1;
+  }
+
 }
