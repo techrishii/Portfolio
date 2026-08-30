@@ -69,12 +69,17 @@ const swiperWork = new Swiper('.work__swiper', {
       el: '.swiper-pagination',
       clickable: true,
    },
+
+   navigation: {
+      nextEl: '.work__button-next',
+      prevEl: '.work__button-prev',
+   },
+
    autoplay: {
       delay: 3000,
-      disableOnInteraction: false,
+      disableOnInteraction: false
    }
 })
-
 /*=============== SERVICES ACCORDION ===============*/
 const servicesCards = document.querySelectorAll('.services__card'),
    servicesButtons = document.querySelectorAll('.services__button')
@@ -166,8 +171,7 @@ document.addEventListener('mousemove', (e) => {
 
 cursorMove()
 
-const a = document.querySelectorAll('a')
-
+const a = document.querySelectorAll('a, button')
 a.forEach(item => {
    item.addEventListener('mouseover', () => {
       cursor.classList.add('hide-cursor')
@@ -213,3 +217,85 @@ sr.reveal('.testimonials__container')
 sr.reveal(`.contact_form`)
 sr.reveal(`.contact__link`, {delay: 600, interval: 200})
 sr.reveal('.footer__container')
+
+/*=============== SUBTLE CODE RAIN ===============*/
+const codeRain = document.getElementById('code-rain')
+
+if (codeRain) {
+   const context = codeRain.getContext('2d')
+   const characters = '01{}<>/[]=>+*'
+   let streams = []
+   let animationId
+
+   const setupRain = () => {
+      const ratio = Math.min(window.devicePixelRatio || 1, 2)
+      const width = window.innerWidth
+      const height = window.innerHeight
+
+      codeRain.width = width * ratio
+      codeRain.height = height * ratio
+      context.setTransform(ratio, 0, 0, ratio, 0, 0)
+
+      // More streams, mostly around the left and right edges.
+      streams = [
+         { x: width * .025, y: height * .12, speed: .48, length: 10 },
+         { x: width * .07, y: height * .48, speed: .40, length: 8 },
+         { x: width * .13, y: height * .72, speed: .55, length: 11 },
+         { x: width * .20, y: height * .25, speed: .44, length: 9 },
+         { x: width * .27, y: height * .88, speed: .38, length: 7 },
+
+         { x: width * .73, y: height * .14, speed: .46, length: 9 },
+         { x: width * .81, y: height * .61, speed: .52, length: 11 },
+         { x: width * .88, y: height * .33, speed: .41, length: 8 },
+         { x: width * .94, y: height * .78, speed: .57, length: 10 },
+         { x: width * .98, y: height * .06, speed: .43, length: 8 }
+      ]
+   }
+
+   const drawRain = () => {
+      const width = window.innerWidth
+      const height = window.innerHeight
+
+      context.clearRect(0, 0, width, height)
+      context.font = '15px monospace'
+      context.textAlign = 'center'
+
+      streams.forEach(stream => {
+         for (let i = 0; i < stream.length; i++) {
+            const y = stream.y - i * 19
+
+            if (y < 0 || y > height) continue
+
+            const alpha = Math.max(.06, .66 - i * .06)
+            context.fillStyle = `hsla(110, 90%, 70%, ${alpha})`
+
+            context.fillText(
+               characters[Math.floor(Math.random() * characters.length)],
+               stream.x,
+               y
+            )
+         }
+
+         stream.y += stream.speed
+
+         if (stream.y > height + stream.length * 20) {
+            stream.y = -20 - Math.random() * 180
+         }
+      })
+
+      animationId = requestAnimationFrame(drawRain)
+   }
+
+   setupRain()
+   drawRain()
+
+   window.addEventListener('resize', setupRain)
+
+   document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+         cancelAnimationFrame(animationId)
+      } else {
+         drawRain()
+      }
+   })
+}
